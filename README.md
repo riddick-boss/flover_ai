@@ -17,6 +17,8 @@ samples, guidance on mobile development, and a full API reference.
 
 Useful commands:
 
+- flutter pub add
+- flutter pub add dev:
 - flutter pub outdated
 - flutter pub upgrade --major-versions
 - flutter pub get
