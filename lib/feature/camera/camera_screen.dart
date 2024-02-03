@@ -27,28 +27,55 @@ class CameraScreen extends StatelessWidget {
               child: BlocBuilder<CameraPermissionCubit, CameraPermissionState>(
                 builder: (context, state) {
                   if (state is CameraPermissionDenied) {
-                    return ColoredBox(
-                      color: Theme.of(context).colorScheme.background,
-                      child: Center(
-                        child: FilledButton(
-                          onPressed: () {},
-                          child: const Text('DENIED'),
-                        ),
-                      ),
-                    );
+                    return const CameraDeniedBox();
                   }
 
-                  return ColoredBox(
-                    color: Theme.of(context).colorScheme.background,
-                    child: const Center(
-                      child: Text(
-                        'granted',
-                        style: TextStyle(),
-                      ),
-                    ),
-                  );
+                  return const CameraAllowedBox();
                 },
               )),
         ));
+  }
+}
+
+class CameraDeniedBox extends StatelessWidget {
+  const CameraDeniedBox({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ColoredBox(
+      color: Theme.of(context).colorScheme.background,
+      child: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const CircularProgressIndicator.adaptive(),
+            const SizedBox(
+              height: 10,
+            ),
+            Text(
+              'Preparing camera...',
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class CameraAllowedBox extends StatelessWidget {
+  const CameraAllowedBox({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ColoredBox(
+      color: Theme.of(context).colorScheme.background,
+      child: const Center(
+        child: Text(
+          'granted',
+          style: TextStyle(),
+        ),
+      ),
+    );
   }
 }
