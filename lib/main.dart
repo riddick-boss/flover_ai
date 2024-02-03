@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'domain/infrastructure/app_initializer.dart';
 import 'domain/navigation/nav_configurator.dart';
+import 'domain/theme/flover_ai_theme.dart';
 
 void main() async {
   await AppInitializer.setup();
@@ -16,10 +17,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp.router(
       routerConfig: NavConfigurator.router,
       title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
+      theme: FloverAiTheme.lightTheme,
+      darkTheme: FloverAiTheme.darkTheme,
     );
   }
 }
