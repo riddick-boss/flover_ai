@@ -13,11 +13,11 @@ class CameraScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (context) => RedirectionCubit(),
+        create: (context) => RedirectionCubit(getIt()),
         child: BlocListener<RedirectionCubit, RedirectionState>(
           listener: (context, state) {
             if (state is RedirectToCameraPermissionScreen) {
-              context.go(NavRoute.camera.path); //TODO: change path
+              context.push(NavRoute.grantCameraPermission.path);
             } else if (state is RedirectToFlowerDetailsScreen) {
               context.go(NavRoute.camera.path); //TODO: change path
             }
