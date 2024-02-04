@@ -48,8 +48,8 @@ class GrantCameraPermissionScreen extends StatelessWidget {
                     alignment: AlignmentDirectional.bottomCenter,
                     child: Builder(builder: (context) {
                       return FilledButton(
-                        onPressed: () async {
-                          await context
+                        onPressed: () {
+                          context
                               .read<PermissionStateCubit>()
                               .onAllowCameraPermissionClicked();
                         },
