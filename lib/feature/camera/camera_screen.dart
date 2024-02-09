@@ -24,14 +24,16 @@ class CameraScreen extends StatelessWidget {
             }
           },
           child: BlocProvider(
-              create: (context) => CameraPermissionCubit(getIt()),
+              create: (context) => CameraPermissionCubit(getIt(), getIt()),
               child: BlocBuilder<CameraPermissionCubit, CameraPermissionState>(
                 builder: (context, state) {
                   if (state is CameraPermissionDenied) {
                     return const CameraDeniedBox();
                   }
 
-                  return const CameraAllowedBox();
+                  return CameraAllowedBox(
+                    cameras: context.read<CameraPermissionCubit>().getCameras(),
+                  );
                 },
               )),
         ));
@@ -65,16 +67,17 @@ class CameraDeniedBox extends StatelessWidget {
 }
 
 class CameraAllowedBox extends StatelessWidget {
-  const CameraAllowedBox({super.key});
+  const CameraAllowedBox({super.key, required this.cameras});
+
+  final List<CameraDescription> cameras;
 
   @override
   Widget build(BuildContext context) {
     return ColoredBox(
       color: Theme.of(context).colorScheme.background,
-      child: const Center(
-        child: Text(
-          'granted',
-          style: TextStyle(),
+      child: Center(
+        child: CameraBox(
+          cameras: cameras,
         ),
       ),
     );
@@ -84,7 +87,7 @@ class CameraAllowedBox extends StatelessWidget {
 class CameraBox extends StatefulWidget {
   const CameraBox({super.key, required this.cameras});
 
-  final List<CameraDescription?> cameras;
+  final List<CameraDescription> cameras;
 
   @override
   State<CameraBox> createState() => _CameraBoxState();
@@ -100,7 +103,43 @@ class _CameraBoxState extends State<CameraBox> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    debugPrint('getting cameras: ${widget.cameras}');
+    initCamera(widget.cameras.firstOrNull);
+  }
+
+  Future initCamera(CameraDescription? cameraDescription) async {
+    if(cameraDescription == null) {
+      debugPrint('CameraDescription is null!!');
+      return;
+    }
+    _cameraController =
+        CameraController(cameraDescription, ResolutionPreset.high);
+    try {
+      await _cameraController.initialize().then((_) {
+        if (!mounted) {
+          return;
+        }
+        setState(() {});
+      });
+    } on Exception catch (e) {
+      debugPrint('$e');
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Container();
+    return SafeArea(
+        child: Stack(
+      children: [
+        if (_cameraController.value.isInitialized)
+          CameraPreview(_cameraController)
+        else
+          const Center(
+            child: CircularProgressIndicator.adaptive(),
+          ),
+      ],
+    ));
   }
 }
