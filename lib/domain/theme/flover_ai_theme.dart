@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'theme.g.dart';
+import 'flover_ai_material.dart';
 import 'typography.dart';
 
 class FloverAiTheme {
