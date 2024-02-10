@@ -19,6 +19,8 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: FloverAiTheme.lightTheme,
       darkTheme: FloverAiTheme.darkTheme,
+      highContrastTheme: FloverAiTheme.highContrastTheme,
+      highContrastDarkTheme: FloverAiTheme.highContrastDarkTheme,
     );
   }
 }

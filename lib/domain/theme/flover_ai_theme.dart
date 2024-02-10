@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
-import 'color_schemes.g.dart';
+import 'theme.g.dart';
 
 class FloverAiTheme {
-  static ThemeData lightTheme =
-      ThemeData(useMaterial3: true, colorScheme: lightColorScheme);
-  static ThemeData darkTheme =
-      ThemeData(useMaterial3: true, colorScheme: darkColorScheme);
+  static ThemeData lightTheme = const FloverAiMaterial(TextTheme()).light();
+  static ThemeData darkTheme = const FloverAiMaterial(TextTheme()).dark();
+  static ThemeData highContrastTheme =
+      const FloverAiMaterial(TextTheme()).lightHighContrast();
+  static ThemeData highContrastDarkTheme =
+      const FloverAiMaterial(TextTheme()).darkHighContrast();
 }
