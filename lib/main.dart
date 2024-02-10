@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       routerConfig: NavConfigurator.router,
-      title: 'Flutter Demo',
+      title: 'Flover AI',
       theme: FloverAiTheme.lightTheme,
       darkTheme: FloverAiTheme.darkTheme,
       highContrastTheme: FloverAiTheme.highContrastTheme,

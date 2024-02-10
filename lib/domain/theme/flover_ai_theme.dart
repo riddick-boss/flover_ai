@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 
 import 'theme.g.dart';
+import 'typography.dart';
 
 class FloverAiTheme {
-  static ThemeData lightTheme = const FloverAiMaterial(TextTheme()).light();
-  static ThemeData darkTheme = const FloverAiMaterial(TextTheme()).dark();
-  static ThemeData highContrastTheme =
-      const FloverAiMaterial(TextTheme()).lightHighContrast();
-  static ThemeData highContrastDarkTheme =
-      const FloverAiMaterial(TextTheme()).darkHighContrast();
+  static final FloverAiMaterial _floverAiMaterial =
+      FloverAiMaterial(FloverAiTypography.textTheme);
+  static ThemeData lightTheme = _floverAiMaterial.light();
+  static ThemeData darkTheme = _floverAiMaterial.dark();
+  static ThemeData highContrastTheme = _floverAiMaterial.lightHighContrast();
+  static ThemeData highContrastDarkTheme = _floverAiMaterial.darkHighContrast();
 }
