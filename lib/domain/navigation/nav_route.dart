@@ -1,4 +1,5 @@
 enum NavRoute {
+  splash(path: '/splash'),
   camera(path: '/camera'),
   grantCameraPermission(path: '/grantCameraPermission');
 
