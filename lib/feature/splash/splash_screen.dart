@@ -17,7 +17,7 @@ class SplashScreen extends StatelessWidget {
         child: BlocListener<SplashCubit, SplashState>(
           listener: (context, state) {
             if (state is SplashRedirect) {
-              context.go(NavRoute.camera.path);
+              context.go(NavRoute.introAllowCamera.path);
             }
           },
           child: Stack(
