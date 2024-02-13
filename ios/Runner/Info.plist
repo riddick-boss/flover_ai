@@ -45,5 +45,8 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<!-- Camera permission -->
+	<key>NSCameraUsageDescription</key>
+	<string>Flover AI requires to access camera for recognizing flowers</string>
 </dict>
 </plist>
