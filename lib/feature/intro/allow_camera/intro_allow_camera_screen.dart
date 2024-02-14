@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../../domain/assets/graphics.dart';
+import '../../../domain/navigation/nav_route.dart';
 import 'cubit/intro_allow_camera_cubit.dart';
 
 class IntroAllowCameraScreen extends StatelessWidget {
@@ -12,6 +14,9 @@ class IntroAllowCameraScreen extends StatelessWidget {
   void _launchedEffect(IntroAllowCameraCubit cubit, BuildContext context) {
     cubit.goToSettings.listen((event) {
       openAppSettings();
+    });
+    cubit.goToIntroDetailedExplanation.listen((event) {
+      context.go(NavRoute.grantCameraPermission.path); //TODO: change path
     });
   }
 

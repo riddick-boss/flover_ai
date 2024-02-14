@@ -6,11 +6,22 @@ import 'package:permission_handler/permission_handler.dart';
 part 'intro_allow_camera_state.dart';
 
 class IntroAllowCameraCubit extends Cubit<IntroAllowCameraState> {
-  IntroAllowCameraCubit() : super(IntroAllowCameraInitial());
+  IntroAllowCameraCubit() : super(IntroAllowCameraInitial()) {
+    _onStart();
+  }
 
-  final _goToSettings = StreamController<bool>();
+  Future<void> _onStart() async {
+    if (await Permission.camera.isGranted) {
+      _goToIntroDetailedExplanation.add(null);
+    }
+  }
 
-  Stream<bool> get goToSettings => _goToSettings.stream;
+  final _goToSettings = StreamController<void>();
+  Stream<void> get goToSettings => _goToSettings.stream;
+
+  final _goToIntroDetailedExplanation = StreamController<void>();
+  Stream<void> get goToIntroDetailedExplanation =>
+      _goToIntroDetailedExplanation.stream;
 
   @override
   Future<void> close() {
@@ -28,10 +39,16 @@ class IntroAllowCameraCubit extends Cubit<IntroAllowCameraState> {
   }
 
   void _handleCameraPermanentlyDenied() {
-    _goToSettings.add(true);
+    _goToSettings.add(null);
   }
 
   Future<void> _askForCameraPermission() async {
-    await Permission.camera.onGrantedCallback(() => null).request();
+    await Permission.camera
+        .onGrantedCallback(() => _onCameraPermissionGranted())
+        .request();
+  }
+
+  void _onCameraPermissionGranted() {
+    _goToIntroDetailedExplanation.add(null);
   }
 }
