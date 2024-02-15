@@ -26,6 +26,7 @@ class IntroAllowCameraCubit extends Cubit<IntroAllowCameraState> {
   @override
   Future<void> close() {
     _goToSettings.close();
+    _goToIntroDetailedExplanation.close();
     return super.close();
   }
 

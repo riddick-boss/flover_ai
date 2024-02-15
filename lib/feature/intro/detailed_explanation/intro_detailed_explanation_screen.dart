@@ -72,8 +72,7 @@ class IntroDetailedExplanationScreen extends StatelessWidget {
                   Center(
                     child: TextButton(
                         onPressed: () {
-                          context.go(NavRoute
-                              .grantCameraPermission.path); //TODO: change path
+                          context.go(NavRoute.recognizer.path);
                         },
                         child: const Row(
                           mainAxisSize: MainAxisSize.min,

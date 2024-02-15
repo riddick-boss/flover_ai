@@ -4,67 +4,79 @@ import 'package:go_router/go_router.dart';
 
 import '../../domain/assets/graphics.dart';
 import '../../domain/navigation/nav_route.dart';
+import '../../domain/theme/flover_ai_material.dart';
 import 'cubit/splash_cubit.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
 
+  void _launchedEffect(SplashCubit cubit, BuildContext context) {
+    cubit.goToIntro.listen((event) {
+      context.go(NavRoute.introAllowCamera.path);
+    });
+    cubit.goToRecognizer.listen((event) {
+      context.go(NavRoute.recognizer.path);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Material(
       child: BlocProvider(
-        create: (context) => SplashCubit(),
-        child: BlocListener<SplashCubit, SplashState>(
-          listener: (context, state) {
-            if (state is SplashRedirect) {
-              context.go(NavRoute.introAllowCamera.path);
-            }
-          },
-          child: Stack(
-            children: [
-              Image(
-                image: AssetImage(Graphics.splashBackground.path),
-                fit: BoxFit.cover,
-                height: double.infinity,
-                width: double.infinity,
-              ),
-              Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: <Color>[
-                      Theme.of(context).colorScheme.primary.withAlpha(0),
-                      Theme.of(context).colorScheme.primary.withAlpha(80),
-                      Theme.of(context).colorScheme.primary.withAlpha(150),
-                      Theme.of(context).colorScheme.primary.withAlpha(240),
-                      Theme.of(context).colorScheme.primary
-                    ],
-                  ),
+        create: (context) {
+          final cubit = SplashCubit();
+          _launchedEffect(cubit, context);
+          return cubit;
+        },
+        child: BlocBuilder<SplashCubit, SplashState>(
+          builder: (context, state) {
+            return Stack(
+              children: [
+                Image(
+                  image: AssetImage(Graphics.splashBackground.path),
+                  fit: BoxFit.cover,
+                  height: double.infinity,
+                  width: double.infinity,
                 ),
-              ),
-              Align(
-                alignment: Alignment.bottomLeft,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 36.0, bottom: 78.0),
-                  child: Text(
-                    'Flover AI',
-                    style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).colorScheme.onPrimary,
-                      shadows: [
-                        Shadow(
-                          blurRadius: 10.0,
-                          color: Theme.of(context).colorScheme.shadow,
-                          offset: const Offset(2.0, 2.0),
-                        ),
+                Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: <Color>[
+                        FloverAiMaterial.lightScheme().primary.withAlpha(0),
+                        FloverAiMaterial.lightScheme().primary.withAlpha(80),
+                        FloverAiMaterial.lightScheme().primary.withAlpha(150),
+                        FloverAiMaterial.lightScheme().primary.withAlpha(240),
+                        FloverAiMaterial.lightScheme().primary
                       ],
                     ),
                   ),
                 ),
-              ),
-            ],
-          ),
+                Align(
+                  alignment: Alignment.bottomLeft,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 36.0, bottom: 78.0),
+                    child: Text(
+                      'Flover AI',
+                      style:
+                          Theme.of(context).textTheme.displayMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: FloverAiMaterial.lightScheme().onPrimary,
+                        shadows: [
+                          Shadow(
+                            blurRadius: 10.0,
+                            color: FloverAiMaterial.lightScheme().shadow,
+                            offset: const Offset(2.0, 2.0),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            );
+          },
         ),
       ),
     );

@@ -5,6 +5,7 @@ import '../../feature/camera/camera_screen.dart';
 import '../../feature/grant_camera_permission/grant_camera_permission_screen.dart';
 import '../../feature/intro/allow_camera/intro_allow_camera_screen.dart';
 import '../../feature/intro/detailed_explanation/intro_detailed_explanation_screen.dart';
+import '../../feature/recognizer/recognizer_screen.dart';
 import '../../feature/splash/splash_screen.dart';
 import 'nav_route.dart';
 
@@ -23,6 +24,10 @@ class NavConfigurator {
       GoRoute(
         path: NavRoute.introDetailedExplanation.path,
         builder: (context, state) => const IntroDetailedExplanationScreen(),
+      ),
+      GoRoute(
+        path: NavRoute.recognizer.path,
+        builder: (context, state) => const RecognizerScreen(),
       ),
       ShellRoute(
         builder: (context, state, child) => Scaffold(
