@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../feature/camera/camera_screen.dart';
 import '../../feature/grant_camera_permission/grant_camera_permission_screen.dart';
 import '../../feature/intro/allow_camera/intro_allow_camera_screen.dart';
+import '../../feature/intro/detailed_explanation/intro_detailed_explanation_screen.dart';
 import '../../feature/splash/splash_screen.dart';
 import 'nav_route.dart';
 
@@ -18,6 +19,10 @@ class NavConfigurator {
       GoRoute(
         path: NavRoute.introAllowCamera.path,
         builder: (context, state) => const IntroAllowCameraScreen(),
+      ),
+      GoRoute(
+        path: NavRoute.introDetailedExplanation.path,
+        builder: (context, state) => const IntroDetailedExplanationScreen(),
       ),
       ShellRoute(
         builder: (context, state, child) => Scaffold(

@@ -1,6 +1,7 @@
 enum NavRoute {
   splash(path: '/splash'),
   introAllowCamera(path: '/introAllowCamera'),
+  introDetailedExplanation(path: '/introDetailedExplanation'),
   camera(path: '/camera'),
   grantCameraPermission(path: '/grantCameraPermission');
 
