@@ -1,5 +1,8 @@
 part of 'recognizer_cubit.dart';
 
-sealed class RecognizerState {}
-
-final class RecognizerInitial extends RecognizerState {}
+@freezed
+class RecognizerState with _$RecognizerState {
+  const factory RecognizerState({
+    required String? recognizedFlowerName,
+  }) = _RecognizerState;
+}
