@@ -19,6 +19,7 @@ Useful commands:
 
 - flutter pub add
 - flutter pub add dev:
+- flutter pub remove
 - flutter pub outdated
 - flutter pub upgrade --major-versions
 - flutter pub get
