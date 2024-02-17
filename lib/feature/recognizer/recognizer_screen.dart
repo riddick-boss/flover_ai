@@ -39,7 +39,7 @@ class CameraBox extends StatefulWidget {
   State<CameraBox> createState() => _CameraBoxState();
 }
 
-class _CameraBoxState extends State<CameraBox> {
+class _CameraBoxState extends State<CameraBox> with WidgetsBindingObserver {
   CameraController? _cameraController;
 
   @override
@@ -62,17 +62,35 @@ class _CameraBoxState extends State<CameraBox> {
       return;
     }
     _cameraController = CameraController(
-        frontCameraDescription, ResolutionPreset.max,
-        enableAudio: false);
+      frontCameraDescription,
+      ResolutionPreset.max,
+      enableAudio: false,
+    );
     try {
-      await _cameraController?.initialize().then((value) {
-        if (!mounted) {
-          return;
-        }
-      });
-      setState(() {});
+      await _cameraController?.initialize();
+      if (mounted) {
+        setState(() {});
+      }
     } on Exception catch (e) {
       debugPrint('Failed to initialize camera: $e');
+    }
+
+    _cameraController?.addListener(() {
+      if (mounted) {
+        setState(() {});
+      }
+    });
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (_cameraController == null) {
+      return;
+    }
+    if (state == AppLifecycleState.inactive) {
+      _cameraController?.dispose();
+    } else if (state == AppLifecycleState.resumed) {
+      _initCamera();
     }
   }
 
