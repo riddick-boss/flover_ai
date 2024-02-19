@@ -20,7 +20,9 @@ class RecognizerScreen extends StatelessWidget {
               color: Theme.of(context).colorScheme.background,
               child: Stack(
                 children: [
-                  const CameraBox(),
+                  CameraBox(
+                    recognizerCubit: context.read<RecognizerCubit>(),
+                  ),
                   RecognizerBottomBox(state: state),
                 ],
               ),
@@ -33,10 +35,12 @@ class RecognizerScreen extends StatelessWidget {
 }
 
 class CameraBox extends StatefulWidget {
-  const CameraBox({super.key});
+  const CameraBox({super.key, required this.recognizerCubit});
 
   @override
   State<CameraBox> createState() => _CameraBoxState();
+
+  final RecognizerCubit recognizerCubit;
 }
 
 class _CameraBoxState extends State<CameraBox> with WidgetsBindingObserver {
@@ -63,7 +67,7 @@ class _CameraBoxState extends State<CameraBox> with WidgetsBindingObserver {
     }
     _cameraController = CameraController(
       frontCameraDescription,
-      ResolutionPreset.max,
+      ResolutionPreset.high,
       enableAudio: false,
     );
     try {
@@ -71,15 +75,12 @@ class _CameraBoxState extends State<CameraBox> with WidgetsBindingObserver {
       if (mounted) {
         setState(() {});
       }
+      _cameraController?.startImageStream((image) {
+        widget.recognizerCubit.onNextImage(image);
+      });
     } on Exception catch (e) {
       debugPrint('Failed to initialize camera: $e');
     }
-
-    _cameraController?.addListener(() {
-      if (mounted) {
-        setState(() {});
-      }
-    });
   }
 
   @override
