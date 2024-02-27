@@ -32,6 +32,8 @@ dependencies:
   camera: ^0.10.5+9
   freezed_annotation: ^2.4.1
   tflite_flutter: ^0.10.4
+  image: ^4.1.7
+  collection: ^1.18.0
 
 dev_dependencies:
   flutter_test:
@@ -51,3 +53,4 @@ flutter:
 
   assets:
     - assets/graphics/
+    - assets/tf_lite_models/
