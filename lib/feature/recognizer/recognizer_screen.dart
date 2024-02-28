@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -69,8 +71,11 @@ class _CameraBoxState extends State<CameraBox> with WidgetsBindingObserver {
     }
     _cameraController = CameraController(
       frontCameraDescription,
-      ResolutionPreset.high,
+      ResolutionPreset.max,
       enableAudio: false,
+      imageFormatGroup: Platform.isAndroid
+          ? ImageFormatGroup.nv21 //for Android
+          : ImageFormatGroup.bgra8888, //for iOS
     );
     try {
       await _cameraController?.initialize();
@@ -92,7 +97,8 @@ class _CameraBoxState extends State<CameraBox> with WidgetsBindingObserver {
     }
     if (state == AppLifecycleState.inactive) {
       _cameraController?.dispose();
-    } else if (state == AppLifecycleState.resumed) {
+    } else if (!(_cameraController?.value.isInitialized ?? false) &&
+        state == AppLifecycleState.resumed) {
       _initCamera();
     }
   }
