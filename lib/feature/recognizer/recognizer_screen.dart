@@ -83,7 +83,11 @@ class _CameraBoxState extends State<CameraBox> with WidgetsBindingObserver {
         setState(() {});
       }
       _cameraController?.startImageStream((image) {
-        widget.recognizerCubit.onNextImage(image);
+        widget.recognizerCubit.onNextImage(
+            image,
+            _cameraController?.value.deviceOrientation,
+            frontCameraDescription.sensorOrientation,
+            frontCameraDescription.lensDirection);
       });
     } on Exception catch (e) {
       debugPrint('Failed to initialize camera: $e');
