@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../di/inject_config.dart';
 import '../../domain/assets/graphics.dart';
 import 'cubit/recognizer_cubit.dart';
 
@@ -15,7 +16,7 @@ class RecognizerScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       child: BlocProvider(
-        create: (context) => RecognizerCubit(),
+        create: (context) => RecognizerCubit(getIt()),
         child: BlocBuilder<RecognizerCubit, RecognizerState>(
           builder: (context, state) {
             return ColoredBox(
