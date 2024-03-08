@@ -1,24 +1,20 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/services.dart';
-import 'package:google_mlkit_object_detection/google_mlkit_object_detection.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../domain/infrastructure/object_detection/object_detection_service.dart';
 import 'image_converter.dart';
+import 'ml_detector_provider.dart';
 
 @Injectable(as: ObjectDetectionService)
 class GoogleMLKitObjectDetectionService implements ObjectDetectionService {
-  GoogleMLKitObjectDetectionService(this._imageConverter);
+  GoogleMLKitObjectDetectionService(
+    this._imageConverter,
+    this._mlDetectorProvider,
+  );
 
   final ImageConverter _imageConverter;
-
-  late final ObjectDetectorOptions _streamOptions = ObjectDetectorOptions(
-    classifyObjects: true,
-    mode: DetectionMode.stream,
-    multipleObjects: true,
-  );
-  late final ObjectDetector _streamObjectDetector =
-      ObjectDetector(options: _streamOptions);
+  final MlDetectorProvider _mlDetectorProvider;
 
   @override
   Future<String?> detectObject(
@@ -38,8 +34,8 @@ class GoogleMLKitObjectDetectionService implements ObjectDetectionService {
       return null;
     }
 
-    final detectedObjects =
-        await _streamObjectDetector.processImage(inputImage);
+    final detector = await _mlDetectorProvider.getStreamObjetcDetector();
+    final detectedObjects = await detector.processImage(inputImage);
     final detectedLabels =
         detectedObjects.expand((detectedObj) => detectedObj.labels).toList();
     detectedLabels.sort((a, b) => a.confidence.compareTo(b.confidence));
