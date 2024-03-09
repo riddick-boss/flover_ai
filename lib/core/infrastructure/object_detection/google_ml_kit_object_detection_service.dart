@@ -1,8 +1,12 @@
+import 'dart:developer';
+
 import 'package:camera/camera.dart';
 import 'package:flutter/services.dart';
+import 'package:google_mlkit_object_detection/google_mlkit_object_detection.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../domain/infrastructure/object_detection/object_detection_service.dart';
+import '../../../domain/model/detected_obj.dart';
 import 'image_converter.dart';
 import 'ml_detector_provider.dart';
 
@@ -17,7 +21,7 @@ class GoogleMLKitObjectDetectionService implements ObjectDetectionService {
   final MlDetectorProvider _mlDetectorProvider;
 
   @override
-  Future<String?> detectObject(
+  Future<DetectedObj?> detectObject(
     CameraImage image,
     DeviceOrientation? deviceOrientation,
     int sensorOrientation,
@@ -43,8 +47,11 @@ class GoogleMLKitObjectDetectionService implements ObjectDetectionService {
     if (mostConfidentLabel == null) {
       return null;
     }
-    final recognized =
-        '${mostConfidentLabel.text} ${mostConfidentLabel.confidence}';
+    final recognized = _createDetectedObject(mostConfidentLabel);
+    log(recognized.toString());
     return recognized;
   }
+
+  DetectedObj _createDetectedObject(Label label) =>
+      DetectedObj(text: label.text, confidence: label.confidence);
 }
