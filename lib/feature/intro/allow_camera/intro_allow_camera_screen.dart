@@ -16,7 +16,7 @@ class IntroAllowCameraScreen extends StatelessWidget {
       openAppSettings();
     });
     cubit.goToIntroDetailedExplanation.listen((event) {
-      context.go(NavRoute.introDetailedExplanation.path);
+      context.pushReplacement(NavRoute.introDetailedExplanation.path);
     });
   }
 
