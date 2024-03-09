@@ -41,8 +41,10 @@ class RecognizerCubit extends Cubit<RecognizerState> {
         final detectionTime = endTime - startTime;
         log('detectionTime is: $detectionTime');
         if (detectedFloweObject == null ||
-            detectedFloweObject.confidence >= _detectionConfidenceThresdold) {
-          emit(state.copyWith(recognizedFlowerName: detectedFloweObject?.text));
+            detectedFloweObject.confidence < _detectionConfidenceThresdold) {
+          emit(state.copyWith(recognizedFlowerName: null));
+        } else {
+          emit(state.copyWith(recognizedFlowerName: detectedFloweObject.text));
         }
         _isDetecting = false;
       });
