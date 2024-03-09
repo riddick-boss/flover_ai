@@ -57,9 +57,31 @@ class _CameraBoxState extends State<CameraBox> with WidgetsBindingObserver {
   }
 
   @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.inactive) {
+      _disposeCamera();
+    } else if (state == AppLifecycleState.resumed) {
+      _initCamera();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_cameraController != null && _cameraController!.value.isInitialized) {
+      return SizedBox.expand(
+        child: CameraPreview(_cameraController!),
+      );
+    } else {
+      return const Center(
+        child: CircularProgressIndicator.adaptive(),
+      );
+    }
+  }
+
+  @override
   void dispose() {
+    _disposeCamera();
     WidgetsBinding.instance.removeObserver(this);
-    _cameraController?.dispose();
     super.dispose();
   }
 
@@ -83,6 +105,11 @@ class _CameraBoxState extends State<CameraBox> with WidgetsBindingObserver {
       if (mounted) {
         setState(() {});
       }
+      _cameraController?.addListener(() {
+        if (mounted) {
+          setState(() {});
+        }
+      });
       _cameraController?.startImageStream((image) {
         widget.recognizerCubit.onNextImage(
             image,
@@ -95,41 +122,18 @@ class _CameraBoxState extends State<CameraBox> with WidgetsBindingObserver {
     }
   }
 
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (_cameraController == null) {
-      return;
-    }
-    if (state == AppLifecycleState.inactive) {
-      _cameraController?.dispose();
-    } else if (!(_cameraController?.value.isInitialized ?? false) &&
-        state == AppLifecycleState.resumed) {
-      _initCamera();
+  void _stopImageStream() {
+    try {
+      _cameraController?.stopImageStream();
+    } catch (e) {
+      debugPrint(e.toString());
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return AdaptativeCameraPreview(cameraController: _cameraController);
-  }
-}
-
-class AdaptativeCameraPreview extends StatelessWidget {
-  const AdaptativeCameraPreview({super.key, this.cameraController});
-
-  final CameraController? cameraController;
-
-  @override
-  Widget build(BuildContext context) {
-    if (cameraController != null && cameraController!.value.isInitialized) {
-      return SizedBox.expand(
-        child: CameraPreview(cameraController!),
-      );
-    } else {
-      return const Center(
-        child: CircularProgressIndicator.adaptive(),
-      );
-    }
+  void _disposeCamera() {
+    _stopImageStream();
+    _cameraController?.dispose();
+    _cameraController = null;
   }
 }
 
