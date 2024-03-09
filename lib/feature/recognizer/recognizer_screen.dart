@@ -4,6 +4,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../di/inject_config.dart';
 import '../../domain/assets/graphics.dart';
@@ -220,7 +221,12 @@ class RecognizerBottomBox extends StatelessWidget {
             height: 24.0,
           ),
           TextButton(
-            onPressed: () {},
+            onPressed: () {
+              if (flowerName == null) {
+                return;
+              }
+              _launchInBrowserView(flowerName);
+            },
             style: TextButton.styleFrom(
                 padding: const EdgeInsets.symmetric(horizontal: 24.0),
                 foregroundColor: Theme.of(context).colorScheme.onPrimary,
@@ -230,5 +236,13 @@ class RecognizerBottomBox extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Future<void> _launchInBrowserView(String flower) async {
+    final uri =
+        Uri(scheme: 'https', host: 'en.wikipedia.org', path: 'wiki/$flower/');
+    if (!await launchUrl(uri, mode: LaunchMode.inAppBrowserView)) {
+      debugPrint('Could not launch $uri');
+    }
   }
 }
