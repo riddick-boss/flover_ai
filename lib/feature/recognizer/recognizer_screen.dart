@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../di/inject_config.dart';
 import '../../domain/assets/graphics.dart';
 import 'cubit/recognizer_cubit.dart';
 
@@ -13,14 +16,16 @@ class RecognizerScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       child: BlocProvider(
-        create: (context) => RecognizerCubit(),
+        create: (context) => RecognizerCubit(getIt()),
         child: BlocBuilder<RecognizerCubit, RecognizerState>(
           builder: (context, state) {
             return ColoredBox(
               color: Theme.of(context).colorScheme.background,
               child: Stack(
                 children: [
-                  const CameraBox(),
+                  CameraBox(
+                    recognizerCubit: context.read<RecognizerCubit>(),
+                  ),
                   RecognizerBottomBox(state: state),
                 ],
               ),
@@ -33,10 +38,12 @@ class RecognizerScreen extends StatelessWidget {
 }
 
 class CameraBox extends StatefulWidget {
-  const CameraBox({super.key});
+  const CameraBox({super.key, required this.recognizerCubit});
 
   @override
   State<CameraBox> createState() => _CameraBoxState();
+
+  final RecognizerCubit recognizerCubit;
 }
 
 class _CameraBoxState extends State<CameraBox> with WidgetsBindingObserver {
@@ -44,12 +51,14 @@ class _CameraBoxState extends State<CameraBox> with WidgetsBindingObserver {
 
   @override
   void initState() {
+    WidgetsBinding.instance.addObserver(this);
     _initCamera();
     super.initState();
   }
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _cameraController?.dispose();
     super.dispose();
   }
@@ -65,21 +74,25 @@ class _CameraBoxState extends State<CameraBox> with WidgetsBindingObserver {
       frontCameraDescription,
       ResolutionPreset.max,
       enableAudio: false,
+      imageFormatGroup: Platform.isAndroid
+          ? ImageFormatGroup.nv21 //for Android
+          : ImageFormatGroup.bgra8888, //for iOS
     );
     try {
       await _cameraController?.initialize();
       if (mounted) {
         setState(() {});
       }
+      _cameraController?.startImageStream((image) {
+        widget.recognizerCubit.onNextImage(
+            image,
+            _cameraController?.value.deviceOrientation,
+            frontCameraDescription.sensorOrientation,
+            frontCameraDescription.lensDirection);
+      });
     } on Exception catch (e) {
       debugPrint('Failed to initialize camera: $e');
     }
-
-    _cameraController?.addListener(() {
-      if (mounted) {
-        setState(() {});
-      }
-    });
   }
 
   @override
@@ -89,7 +102,8 @@ class _CameraBoxState extends State<CameraBox> with WidgetsBindingObserver {
     }
     if (state == AppLifecycleState.inactive) {
       _cameraController?.dispose();
-    } else if (state == AppLifecycleState.resumed) {
+    } else if (!(_cameraController?.value.isInitialized ?? false) &&
+        state == AppLifecycleState.resumed) {
       _initCamera();
     }
   }
