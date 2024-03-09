@@ -58,12 +58,8 @@ class _CameraBoxState extends State<CameraBox> with WidgetsBindingObserver {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (_cameraController == null || !_cameraController!.value.isInitialized) {
-      return;
-    }
     if (state == AppLifecycleState.inactive) {
-      _stopImageStream();
-      _cameraController?.dispose();
+      _disposeCamera();
     } else if (state == AppLifecycleState.resumed) {
       _initCamera();
     }
@@ -71,13 +67,20 @@ class _CameraBoxState extends State<CameraBox> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    return AdaptativeCameraPreview(cameraController: _cameraController);
+    if (_cameraController != null && _cameraController!.value.isInitialized) {
+      return SizedBox.expand(
+        child: CameraPreview(_cameraController!),
+      );
+    } else {
+      return const Center(
+        child: CircularProgressIndicator.adaptive(),
+      );
+    }
   }
 
   @override
   void dispose() {
-    _stopImageStream();
-    _cameraController?.dispose();
+    _disposeCamera();
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
@@ -126,24 +129,11 @@ class _CameraBoxState extends State<CameraBox> with WidgetsBindingObserver {
       debugPrint(e.toString());
     }
   }
-}
 
-class AdaptativeCameraPreview extends StatelessWidget {
-  const AdaptativeCameraPreview({super.key, this.cameraController});
-
-  final CameraController? cameraController;
-
-  @override
-  Widget build(BuildContext context) {
-    if (cameraController != null && cameraController!.value.isInitialized) {
-      return SizedBox.expand(
-        child: CameraPreview(cameraController!),
-      );
-    } else {
-      return const Center(
-        child: CircularProgressIndicator.adaptive(),
-      );
-    }
+  void _disposeCamera() {
+    _stopImageStream();
+    _cameraController?.dispose();
+    _cameraController = null;
   }
 }
 
