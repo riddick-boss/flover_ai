@@ -247,7 +247,7 @@ class RecognizerBottomBox extends StatelessWidget {
     final uri = Uri(
       scheme: 'https',
       host: 'en.wikipedia.org',
-      path: 'wiki/$flowerNameToPass/',
+      path: 'wiki/$flowerNameToPass',
     );
     if (!await launchUrl(uri, mode: LaunchMode.inAppBrowserView)) {
       debugPrint('Could not launch $uri');
