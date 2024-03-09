@@ -16,6 +16,8 @@ class RecognizerCubit extends Cubit<RecognizerState> {
           recognizedFlowerName: null,
         ));
 
+  static const double _detectionConfidenceThresdold = 0.7;
+
   final ObjectDetectionService _objectDetectionService;
 
   bool _isDetecting = false;
@@ -34,11 +36,14 @@ class RecognizerCubit extends Cubit<RecognizerState> {
         sensorOrientation,
         cameraLensDirection,
       )
-          .then((detectedFlower) {
+          .then((detectedFloweObject) {
         final endTime = DateTime.now().millisecondsSinceEpoch;
         final detectionTime = endTime - startTime;
         log('detectionTime is: $detectionTime');
-        emit(state.copyWith(recognizedFlowerName: detectedFlower));
+        if (detectedFloweObject == null ||
+            detectedFloweObject.confidence >= _detectionConfidenceThresdold) {
+          emit(state.copyWith(recognizedFlowerName: detectedFloweObject?.text));
+        }
         _isDetecting = false;
       });
     }
