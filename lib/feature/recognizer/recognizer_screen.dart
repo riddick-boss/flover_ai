@@ -57,9 +57,28 @@ class _CameraBoxState extends State<CameraBox> with WidgetsBindingObserver {
   }
 
   @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (_cameraController == null || !_cameraController!.value.isInitialized) {
+      return;
+    }
+    if (state == AppLifecycleState.inactive) {
+      _stopImageStream();
+      _cameraController?.dispose();
+    } else if (state == AppLifecycleState.resumed) {
+      _initCamera();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AdaptativeCameraPreview(cameraController: _cameraController);
+  }
+
+  @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
+    _stopImageStream();
     _cameraController?.dispose();
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
@@ -83,6 +102,11 @@ class _CameraBoxState extends State<CameraBox> with WidgetsBindingObserver {
       if (mounted) {
         setState(() {});
       }
+      _cameraController?.addListener(() {
+        if (mounted) {
+          setState(() {});
+        }
+      });
       _cameraController?.startImageStream((image) {
         widget.recognizerCubit.onNextImage(
             image,
@@ -95,22 +119,12 @@ class _CameraBoxState extends State<CameraBox> with WidgetsBindingObserver {
     }
   }
 
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (_cameraController == null) {
-      return;
+  void _stopImageStream() {
+    try {
+      _cameraController?.stopImageStream();
+    } catch (e) {
+      debugPrint(e.toString());
     }
-    if (state == AppLifecycleState.inactive) {
-      _cameraController?.dispose();
-    } else if (!(_cameraController?.value.isInitialized ?? false) &&
-        state == AppLifecycleState.resumed) {
-      _initCamera();
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return AdaptativeCameraPreview(cameraController: _cameraController);
   }
 }
 
