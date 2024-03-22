@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../domain/assets/graphics.dart';
-import '../../../domain/navigation/nav_route.dart';
+import '../../../../app/presentation/navigation/nav_route.dart';
+import '../../../../core_ui/assets/graphics.dart';
 
 class IntroDetailedExplanationScreen extends StatelessWidget {
   const IntroDetailedExplanationScreen({super.key});

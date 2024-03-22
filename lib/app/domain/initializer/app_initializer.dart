@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../di/inject_config.dart';
+import 'inject_config.dart';
 
 class AppInitializer {
   static Future<void> setup() async {
