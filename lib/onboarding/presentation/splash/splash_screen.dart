@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../domain/assets/graphics.dart';
-import '../../domain/navigation/nav_route.dart';
-import '../../domain/theme/flover_ai_material.dart';
+import '../../../app/presentation/navigation/nav_route.dart';
+import '../../../app/presentation/theme/flover_ai_material.dart';
+import '../../../core_ui/assets/graphics.dart';
 import 'cubit/splash_cubit.dart';
 
 class SplashScreen extends StatelessWidget {

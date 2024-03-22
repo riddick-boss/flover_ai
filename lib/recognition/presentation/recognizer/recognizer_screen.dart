@@ -6,8 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../di/inject_config.dart';
-import '../../domain/assets/graphics.dart';
+import '../../../app/domain/initializer/inject_config.dart';
+import '../../../core_ui/assets/graphics.dart';
 import 'cubit/recognizer_cubit.dart';
 
 class RecognizerScreen extends StatelessWidget {

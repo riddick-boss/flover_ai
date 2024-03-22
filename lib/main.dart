@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'domain/infrastructure/app_initializer.dart';
-import 'domain/navigation/nav_configurator.dart';
-import 'domain/theme/flover_ai_theme.dart';
+import 'app/domain/initializer/app_initializer.dart';
+import 'app/presentation/navigation/nav_configurator.dart';
+import 'app/presentation/theme/flover_ai_theme.dart';
 
 void main() async {
   await AppInitializer.setup();
