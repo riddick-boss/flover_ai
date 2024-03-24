@@ -1,16 +1,47 @@
-# flover_ai
+# Flover AI
 
-Flutter project using AI vision
+#### Welcome to the flower recognition app! Are you curious about the flowers you encounter on your outdoor adventures or in your garden? Look no further! Flover AI brings the world of flowers to your fingertips, making it easy and fun to learn about them.
 
-## Getting Started
+#### App is published on Google Play.
 
-This project is a starting point for a Flutter application.
+<a href="https://play.google.com/store/apps/details?id=abspace.net.flover_ai">
+    <img alt="Get it on Google Play"
+        height="80"
+        src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" />
+</a>  
 
-A few resources to get you started if this is your first Flutter project:
+## Features
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- <b>Instant Identification:</b> Simply point your camera at any flower, and app will quickly identify it for you.
+- <b>Custom Vision Model:</b> With the power of a custom-built machine learning model, app goes beyond standard recognition capabilities.
+- <b>Detailed Information:</b> Explore in-depth information and fascinating facts about each flower you discover.
+- <b>User-Friendly Experience:</b> App is designed with user in mind, offering a seamless and intuitive interface for effortless exploration.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Screenshots
+
+<div align="center">
+    <img src="/screenshots/android_camera_frame.png" alt="Screenshot 1" width="250" hspace="20">
+    <img src="/screenshots/android_intro_frame.png" alt="Screenshot 2" width="250" hspace="20">
+    <img src="/screenshots/android_intro_frame_dark.png" alt="Screenshot 3" width="250" hspace="20">
+</div>
+
+## Tech stack
+- bloc
+- get_it & injectable
+- rxdart
+- go_router
+- camera
+- google_mlkit_object_detection
+- google_fonts
+- clean architecture
+
+### Flutter useful commands:
+- flutter pub add
+- flutter pub add dev:
+- flutter pub remove
+- flutter pub outdated
+- flutter pub upgrade --major-versions
+- flutter pub get
+- dart run build_runner build --delete-conflicting-outputs
+- dart run build_runner clean
+- flutter test
