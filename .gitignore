@@ -840,6 +840,8 @@ Temporary Items
 
 *.freezed.dart
 *.config.dart
+/android/keystore.properties
+/android/google-services.json
 
 ### ---------------------------- References ---------------------------- ###
 
