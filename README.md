@@ -19,8 +19,6 @@
 
 ## Screenshots
 
-<!-- ![Screenshot 1](/screenshots/android_camera_frame.png) &nbsp;&nbsp;&nbsp; ![Screenshot 2](/screenshots/android_intro_frame.png) &nbsp;&nbsp;&nbsp; ![Screenshot 3](/screenshots/android_intro_frame_dark.png) -->
-
 <div align="center">
     <img src="/screenshots/android_camera_frame.png" alt="Screenshot 1" width="250" hspace="20">
     <img src="/screenshots/android_intro_frame.png" alt="Screenshot 2" width="250" hspace="20">
