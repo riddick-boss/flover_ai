@@ -7,6 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../app/domain/initializer/inject_config.dart';
+import '../../../app/presentation/theme/flover_ai_material.dart';
 import '../../../core_ui/assets/graphics.dart';
 import 'cubit/recognizer_cubit.dart';
 
@@ -27,11 +28,55 @@ class RecognizerScreen extends StatelessWidget {
                   CameraBox(
                     recognizerCubit: context.read<RecognizerCubit>(),
                   ),
+                  const TopHint(),
                   RecognizerBottomBox(state: state),
                 ],
               ),
             );
           },
+        ),
+      ),
+    );
+  }
+}
+
+class TopHint extends StatelessWidget {
+  const TopHint({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      top: 0,
+      left: 0,
+      right: 0,
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: <Color>[
+              FloverAiMaterial.lightScheme().primary,
+              FloverAiMaterial.lightScheme().primary.withAlpha(200),
+              FloverAiMaterial.lightScheme().primary.withAlpha(120),
+            ],
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.only(
+            top: 32.0,
+            left: 32.0,
+            right: 32.0,
+            bottom: 8.0,
+          ),
+          child: Center(
+            child: Text(
+              'Point your camera at the flower',
+              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                    color: Theme.of(context).colorScheme.onPrimary,
+                    fontWeight: FontWeight.bold,
+                  ),
+            ),
+          ),
         ),
       ),
     );
