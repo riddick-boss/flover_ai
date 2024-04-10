@@ -72,8 +72,9 @@ class TopHint extends StatelessWidget {
             child: Text(
               'Point your camera at the flower',
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  color: Theme.of(context).colorScheme.onPrimary,
-                  fontWeight: FontWeight.bold),
+                    color: Theme.of(context).colorScheme.onPrimary,
+                    fontWeight: FontWeight.bold,
+                  ),
             ),
           ),
         ),
