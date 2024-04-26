@@ -63,7 +63,7 @@ class TopHint extends StatelessWidget {
         ),
         child: Padding(
           padding: const EdgeInsets.only(
-            top: 32.0,
+            top: 48.0,
             left: 32.0,
             right: 32.0,
             bottom: 8.0,
